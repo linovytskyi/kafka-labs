@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class KafkaListeners {
 
-    @KafkaListener(topics = "milk-products-facts.public.milk_products_facts", groupId = "None")
+    @KafkaListener(topics = "milk-products-facts.public.milk_products_facts", groupId = "None", containerFactory = "listenerFactory")
     void listen(String message) {
         System.out.println("Kafka Listener received message:");
         ObjectMapper objectMapper = new ObjectMapper();

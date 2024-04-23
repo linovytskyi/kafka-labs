@@ -9,7 +9,7 @@
     "database.password": "password",
     "database.dbname" : "postgres",
     "topic.prefix": "milk-products-facts",
-    "table.include.list": "public.milk_product_facts"
+    "table.include.list": "public.milk_products_facts"
 
   }
 }

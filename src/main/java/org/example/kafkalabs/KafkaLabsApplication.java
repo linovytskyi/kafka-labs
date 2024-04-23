@@ -15,6 +15,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.kafka.core.KafkaTemplate;
 
 import java.io.FileReader;
@@ -27,23 +28,5 @@ public class KafkaLabsApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(KafkaLabsApplication.class, args);
-    }
-
-    @Bean
-    CommandLineRunner commandLineRunner(KafkaTemplate<String, String> kafkaTemplate) {
-        return args -> {
-            for (int i = 0; i < 2; i++) {
-                ObjectMapper objectMapper = new ObjectMapper();
-                objectMapper.setPropertyNamingStrategy(PropertyNamingStrategies.SNAKE_CASE);
-                ObjectNode rootNode = objectMapper.createObjectNode();
-                ObjectNode valueNode = objectMapper.valueToTree(MilkProductFacts.createRandomObject());
-                rootNode.set("after", valueNode);
-
-                ObjectNode payloadNode = objectMapper.createObjectNode();
-                payloadNode.set("payload", rootNode);
-
-                kafkaTemplate.send("milk-products-facts.public.milk_products_facts", objectMapper.writeValueAsString(payloadNode));
-            }
-        };
     }
 }

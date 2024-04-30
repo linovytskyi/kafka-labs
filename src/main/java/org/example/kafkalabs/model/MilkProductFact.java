@@ -12,7 +12,7 @@ import java.util.Random;
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class MilkProductFacts {
+public class MilkProductFact {
     Integer year;
     Integer fluidMilk;
     Double fluidYogurt;
@@ -32,9 +32,9 @@ public class MilkProductFacts {
     Float dryButtermilk;
     Float dryWhey;
 
-    public static MilkProductFacts createRandomObject() {
+    public static MilkProductFact createRandomFact() {
         Random random = new Random();
-        MilkProductFacts randomObject = new MilkProductFacts();
+        MilkProductFact randomObject = new MilkProductFact();
         randomObject.setYear(random.nextInt(1900, 2100));
         randomObject.setFluidMilk(random.nextInt(1000));
         randomObject.setFluidYogurt(random.nextDouble() * 100);

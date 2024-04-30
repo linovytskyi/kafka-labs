@@ -25,10 +25,11 @@ public class KafkaStreamsConfig {
     @Bean(name = KafkaStreamsDefaultConfiguration.DEFAULT_STREAMS_CONFIG_BEAN_NAME)
     KafkaStreamsConfiguration kStreamsConfig() {
         Map<String, Object> props = new HashMap<>();
-        props.put(APPLICATION_ID_CONFIG, "streams-app-1");
+        props.put(APPLICATION_ID_CONFIG, "streams-app-14");
         props.put(BOOTSTRAP_SERVERS_CONFIG, bootstrapAddress);
         props.put(DEFAULT_KEY_SERDE_CLASS_CONFIG, Serdes.String().getClass().getName());
         props.put(DEFAULT_VALUE_SERDE_CLASS_CONFIG, Serdes.String().getClass().getName());
+    //    props.put(DEFAULT_VALUE_SERDE_CLASS_CONFIG, Serdes.Double().getClass().getName());
         props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
         return new KafkaStreamsConfiguration(props);
     }

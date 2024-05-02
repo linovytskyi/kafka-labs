@@ -18,6 +18,12 @@ public class KafkaTopicConfig {
     public static final String MORE_EQUAL_THAN_013_LESS_EQUAL_THAN_016_OUTPUT_TOPIC = "more-equal-than-013-less-equal-than-016";
     public static final String MORE_THAN_016_OUTPUT_TOPIC = "more-than-016";
 
+    public static final String AMOUNT_WHERE_COW_PRICE_LOWER_1100 = "amount-where-cow-price-lower-1100";
+
+    public static final String AMOUNT_MILK_PRODUCED_DURING_YEARS_AVG_MILK_PRICE_LOWER_013 = "amount-milk-produced-during-years-avg-milk-price-lower-013";
+
+    public static final String JOINED_AVG_PRICE_MILK_TOPIC = "joined-avg-price-milk";
+
     @Bean
     @Qualifier("milk-products-facts.public.milk_products_facts")
     public NewTopic milkProductFactsTopic() {
@@ -57,6 +63,27 @@ public class KafkaTopicConfig {
     @Qualifier("more-than-016")
     public NewTopic moreThan016() {
         return TopicBuilder.name(MORE_THAN_016_OUTPUT_TOPIC)
+                .build();
+    }
+
+    @Bean
+    @Qualifier("amount-where-cow-price-lower-1100")
+    public NewTopic amountWhereCowPriceLower1100() {
+        return TopicBuilder.name(AMOUNT_WHERE_COW_PRICE_LOWER_1100)
+                .build();
+    }
+
+    @Bean
+    @Qualifier("amount-milk-produced-during-years-avg-milk-price-lower-013")
+    public NewTopic amountMilkProducedDuringYearsAvgMilkPriceLower013() {
+        return TopicBuilder.name(AMOUNT_MILK_PRODUCED_DURING_YEARS_AVG_MILK_PRICE_LOWER_013)
+                .build();
+    }
+
+    @Bean
+    @Qualifier("joined-avg-price-milk")
+    public NewTopic joinedAvgPriceMilkTopic() {
+        return TopicBuilder.name(JOINED_AVG_PRICE_MILK_TOPIC)
                 .build();
     }
 }

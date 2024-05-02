@@ -1,12 +1,10 @@
 package org.example.kafkalabs.controller;
 
-import org.apache.kafka.streams.StreamsBuilder;
 import org.example.kafkalabs.model.MilkCowFact;
 import org.example.kafkalabs.service.KafkaService;
-import org.example.kafkalabs.streams.KafkaStreams;
+import org.example.kafkalabs.streams.KafkaStreamsPipelineLab3;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.bind.annotation.*;
@@ -20,16 +18,12 @@ public class MilkCowFactController {
 
     private final JdbcTemplate jdbcTemplate;
 
-    private final KafkaStreams kafkaStreams;
-
     private static final Logger LOGGER = LoggerFactory.getLogger(MilkCowFactController.class);
 
     public MilkCowFactController(KafkaService kafkaService,
-                                 JdbcTemplate jdbcTemplate,
-                                 KafkaStreams kafkaStreams) {
+                                 JdbcTemplate jdbcTemplate) {
         this.kafkaService = kafkaService;
         this.jdbcTemplate = jdbcTemplate;
-        this.kafkaStreams = kafkaStreams;
     }
 
     @PostMapping("kafka/random")
@@ -64,11 +58,5 @@ public class MilkCowFactController {
         } catch (Exception e) {
             LOGGER.error("Error occurred while saving fact to db. Details {}", e.getMessage());
         }
-    }
-
-    @GetMapping("/trigger")
-    @ResponseStatus(HttpStatus.OK)
-    public void trigger(@Autowired StreamsBuilder streamsBuilder) {
-        kafkaStreams.lab4PipelineCowsPrice(streamsBuilder);
     }
 }

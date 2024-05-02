@@ -6,10 +6,10 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.springframework.stereotype.Component;
 
 @Component
-public class KafkaConnectMapperUtil {
+public class KafkaConnectMapper {
 
     private final ObjectMapper objectMapper;
-    public KafkaConnectMapperUtil(ObjectMapper objectMapper) {
+    public KafkaConnectMapper(ObjectMapper objectMapper) {
         this.objectMapper = objectMapper;
     }
 

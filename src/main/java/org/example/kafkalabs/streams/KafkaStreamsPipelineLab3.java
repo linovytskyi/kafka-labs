@@ -25,7 +25,7 @@ public class KafkaStreamsPipelineLab3 {
         this.kafkaConnectMapper = kafkaConnectMapper;
     }
 
-    @Autowired
+  //  @Autowired
     void lab3Pipeline(StreamsBuilder streamsBuilder) {
         KStream<String, String> messageStream = streamsBuilder
                 .stream(MILK_COW_FACTS_INPUT_TOPIC, Consumed.with(STRING_SERDE, STRING_SERDE));

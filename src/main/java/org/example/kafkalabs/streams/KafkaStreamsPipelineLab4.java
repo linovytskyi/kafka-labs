@@ -26,8 +26,8 @@ public class KafkaStreamsPipelineLab4 {
         this.kafkaConnectMapper = kafkaConnectMapper;
     }
 
-    @Autowired
-    public void lab4PipelineCowsPrice(StreamsBuilder streamsBuilder) {
+  //  @Autowired
+    public void lab4Pipeline(StreamsBuilder streamsBuilder) {
         KStream<String, String> messageStream = streamsBuilder
                 .stream(MILK_COW_FACTS_INPUT_TOPIC, Consumed.with(STRING_SERDE, STRING_SERDE));
 

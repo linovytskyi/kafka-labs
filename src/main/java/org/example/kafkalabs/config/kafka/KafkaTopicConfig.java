@@ -24,6 +24,10 @@ public class KafkaTopicConfig {
 
     public static final String JOINED_AVG_PRICE_MILK_TOPIC = "joined-avg-price-milk";
 
+    public static final String WINDOWED_TOPIC = "windowed";
+
+    public static final String PRODUCER_METRICS_TOPIC = "producer-metrics";
+
     @Bean
     @Qualifier("milk-products-facts.public.milk_products_facts")
     public NewTopic milkProductFactsTopic() {
@@ -84,6 +88,20 @@ public class KafkaTopicConfig {
     @Qualifier("joined-avg-price-milk")
     public NewTopic joinedAvgPriceMilkTopic() {
         return TopicBuilder.name(JOINED_AVG_PRICE_MILK_TOPIC)
+                .build();
+    }
+
+    @Bean
+    @Qualifier("windowed")
+    public NewTopic windowedTopic() {
+        return TopicBuilder.name(WINDOWED_TOPIC)
+                .build();
+    }
+
+    @Bean
+    @Qualifier("producer-metrics")
+    public NewTopic producerMetrics() {
+        return TopicBuilder.name(PRODUCER_METRICS_TOPIC)
                 .build();
     }
 }

@@ -68,9 +68,19 @@ public class KafkaListeners {
     }
 
     @KafkaListener(topics = "joined-avg-price-milk", groupId = "None", containerFactory = "listenerFactory")
-    void listedJoinedAvgPrice(String message) {
+    void listenJoinedAvgPrice(String message) {
         MilkCowFact milkCowFact = kafkaConnectMapper.getObjectFromStringMessage(message, MilkCowFact.class);
         logProcessMessage(milkCowFact, JOINED_AVG_PRICE_MILK_TOPIC);
+    }
+
+    @KafkaListener(topics = "windowed", groupId = "None", containerFactory = "listenerFactory")
+    void listenWindowedTopic(String message) {
+        logProcessMessage(message, WINDOWED_TOPIC);
+    }
+
+    @KafkaListener(topics = "producer-metrics", groupId = "None", containerFactory = "listenerFactory")
+    void listenProducerMetricsTopic(String message) {
+        logProcessMessage(message, PRODUCER_METRICS_TOPIC);
     }
 
     private static <T> void logProcessMessage(T processedMessage, String topic) {

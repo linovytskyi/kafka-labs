@@ -39,7 +39,7 @@ public class KafkaStreamsPipelineLab3 {
 
 
         // 2. Розділити записи на три гілки: рік марафону до 1990, від 1990 до 2000, після 2000. Записати результати у різні теми
-        winnersStream.mapValues(value -> kafkaConnectMapper.getObjectFromStringMessage(value, LondonMarathon.class))
+        winnersStream.mapValues(value -> kafkaConnectMapper.getObjectFromStringMessage(value, Winner.class))
                 .split()
                 .branch((key, value) -> value.getYear() < 1990, Branched.withConsumer(
                         (ks) -> ks.selectKey((key, value) -> KEY)

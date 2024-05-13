@@ -64,7 +64,7 @@ public class KafkaListeners {
 
     @KafkaListener(topics = AMOUNT_OF_WINNERS_FROM_1990_TO_2000, groupId = "None")
     void listenAmountOfWinnersFrom1990To2000String(String message) {
-        logProcessMessage(message, MARATHONS_FROM_2000);
+        logProcessMessage(message, AMOUNT_OF_WINNERS_FROM_1990_TO_2000);
     }
 
     @KafkaListener(topics = JOINED_MARATHONS, groupId = "None")

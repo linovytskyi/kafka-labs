@@ -1,11 +1,10 @@
-/*
 package org.example.kafkalabs.streams;
 
 import org.apache.kafka.common.serialization.Serde;
 import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.streams.StreamsBuilder;
 import org.apache.kafka.streams.kstream.*;
-import org.example.kafkalabs.model.MilkCowFact;
+import org.example.kafkalabs.model.Winner;
 import org.example.kafkalabs.utill.KafkaConnectMapper;
 import org.example.kafkalabs.utill.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,63 +26,60 @@ public class KafkaStreamsPipelineLab4 {
         this.kafkaConnectMapper = kafkaConnectMapper;
     }
 
-  //  @Autowired
+    @Autowired
     public void lab4Pipeline(StreamsBuilder streamsBuilder) {
         KStream<String, String> messageStream = streamsBuilder
-                .stream(MILK_COW_FACTS_INPUT_TOPIC, Consumed.with(STRING_SERDE, STRING_SERDE));
+                .stream(WINNERS_INPUT_TOPIC, Consumed.with(STRING_SERDE, STRING_SERDE));
 
-        // 1. Порахувати кількість записів, де ціна за корову менше 1100.
-        KTable<String, Long> cowsPriceLower1100 = messageStream.selectKey((key, value) -> KEY)
-                .mapValues(value -> kafkaConnectMapper.getObjectFromStringMessage(value, MilkCowFact.class))
-                .filter((key, value) -> value.getMilkCowCostPerAnimal() < 1100)
+        // 1. Порахувати кількість бігунів Великої Британії.
+        String britishNat = "United Kingdom";
+        KTable<String, Long> amountOfBritishWinners = messageStream.selectKey((key, value) -> KEY)
+                .mapValues(value -> kafkaConnectMapper.getObjectFromStringMessage(value, Winner.class))
+                .filter((key, value) -> value.getNationality().equals(britishNat))
                 .mapValues(kafkaConnectMapper::mapObjectToStringMessage)
                 .groupBy((key, value) -> key)
                 .count();
 
-        cowsPriceLower1100.toStream()
+        amountOfBritishWinners.toStream()
                 .mapValues(Object::toString)
-                .to(AMOUNT_WHERE_COW_PRICE_LOWER_1100);
+                .to(AMOUNT_OF_BRITISH_WINNERS);
 
-        // 2. Порахувати скільки було вироблено молока за ті роки, де середня ціна за молоко була менше 0.13.
-        KTable<String, Double> amountOfMilkProducedDuringYearsAvgPriceMilkLower013 =
+        //2. Порахувати кількість людей, що добігли до фінішу у період з 1990 до 2000 років.
+        KTable<String, Long> amountOfWinnersFrom1900To2000 =
                 messageStream.selectKey((key, value) -> KEY)
-                        .mapValues(value -> kafkaConnectMapper.getObjectFromStringMessage(value, MilkCowFact.class))
-                        .filter((key, value) -> value.getAvgPriceMilk() < 0.13)
-                        .mapValues(MilkCowFact::getMilkProductionLbs)
-                        .groupBy((key, value) -> key, Grouped.with(Serdes.String(), Serdes.Double()))
-                        .reduce(Double::sum);
+                        .mapValues(value -> kafkaConnectMapper.getObjectFromStringMessage(value, Winner.class))
+                        .filter((key, value) -> value.getYear() >= 1990 && value.getYear() <= 2000)
+                        .groupByKey()
+                        .count();
 
-        amountOfMilkProducedDuringYearsAvgPriceMilkLower013.toStream()
-                .mapValues(value -> value * 0.44)
-                .mapValues(value -> value.toString() + " liters")
-                .to(AMOUNT_MILK_PRODUCED_DURING_YEARS_AVG_MILK_PRICE_LOWER_013, Produced.with(Serdes.String(), Serdes.String()));
+        amountOfWinnersFrom1900To2000.toStream()
+                .to(AMOUNT_OF_WINNERS_FROM_1990_TO_2000);
 
 
         // 3. Зчитати у Kafka Stream потоки з п.2 лабораторної роботи №3 (результат розгалудження).
         // Об’єднати ці потоки за допомогою операцій join.
-        KStream<String, String> lessThan013 = streamsBuilder
-                .stream(LESS_THAN_013_OUTPUT_TOPIC, Consumed.with(STRING_SERDE, STRING_SERDE));
+        KStream<String, String> till1990 = streamsBuilder
+                .stream(MARATHONS_TILL_1990, Consumed.with(STRING_SERDE, STRING_SERDE));
 
-        KStream<String, String> moreEqualThan013LessEqualThan016 = streamsBuilder
-                .stream(MORE_EQUAL_THAN_013_LESS_EQUAL_THAN_016_OUTPUT_TOPIC, Consumed.with(STRING_SERDE, STRING_SERDE));
+        KStream<String, String> from1990to2000 = streamsBuilder
+                .stream(MARATHONS_FROM_1990_TO_2000, Consumed.with(STRING_SERDE, STRING_SERDE));
 
-        KStream<String, String> moreThan016 = streamsBuilder
-                .stream(MORE_THAN_016_OUTPUT_TOPIC, Consumed.with(STRING_SERDE, STRING_SERDE));
+        KStream<String, String> from2000 = streamsBuilder
+                .stream(MARATHONS_FROM_2000, Consumed.with(STRING_SERDE, STRING_SERDE));
 
 
-        KStream<String, String> joinedStream = lessThan013
+        KStream<String, String> joinedStream = till1990
                 .join(
-                        moreEqualThan013LessEqualThan016,
+                        from1990to2000,
                         StringUtil::getRandom,
                         JoinWindows.of(Duration.ofMinutes(5))
                 )
                 .join(
-                        moreThan016,
+                        from2000,
                         StringUtil::getRandom,
                         JoinWindows.of(Duration.ofMinutes(5))
                 );
 
-        joinedStream.to(JOINED_AVG_PRICE_MILK_TOPIC);
+        joinedStream.to(JOINED_MARATHONS);
     }
 }
-*/

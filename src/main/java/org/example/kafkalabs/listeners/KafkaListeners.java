@@ -57,6 +57,22 @@ public class KafkaListeners {
         logProcessMessage(winner, MARATHONS_FROM_2000);
     }
 
+    @KafkaListener(topics = AMOUNT_OF_BRITISH_WINNERS, groupId = "None")
+    void listenAmountOfBritishWinners(String message) {
+        logProcessMessage(message, AMOUNT_OF_BRITISH_WINNERS);
+    }
+
+    @KafkaListener(topics = AMOUNT_OF_WINNERS_FROM_1990_TO_2000, groupId = "None")
+    void listenAmountOfWinnersFrom1990To2000String(String message) {
+        logProcessMessage(message, MARATHONS_FROM_2000);
+    }
+
+    @KafkaListener(topics = JOINED_MARATHONS, groupId = "None")
+    void joinedWinners(String message) {
+        Winner winner = kafkaConnectMapper.getObjectFromStringMessage(message, Winner.class);
+        logProcessMessage(winner, JOINED_MARATHONS);
+    }
+
 
     @KafkaListener(topics = "windowed", groupId = "None", containerFactory = "listenerFactory")
     void listenWindowedTopic(String message) {

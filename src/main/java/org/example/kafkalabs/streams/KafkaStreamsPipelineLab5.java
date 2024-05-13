@@ -1,11 +1,10 @@
-/*
 package org.example.kafkalabs.streams;
 
 import org.apache.kafka.common.serialization.Serde;
 import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.streams.StreamsBuilder;
 import org.apache.kafka.streams.kstream.*;
-import org.example.kafkalabs.model.MilkCowFact;
+import org.example.kafkalabs.model.Winner;
 import org.example.kafkalabs.utill.KafkaConnectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -26,39 +25,38 @@ public class KafkaStreamsPipelineLab5 {
         this.kafkaConnectMapper = kafkaConnectMapper;
     }
 
-    @Autowired
+   // @Autowired
     public void lab5Pipeline(StreamsBuilder streamsBuilder) {
         KStream<String, String> messageStream = streamsBuilder
-                .stream(MILK_COW_FACTS_INPUT_TOPIC, Consumed.with(STRING_SERDE, STRING_SERDE));
+                .stream(WINNERS_INPUT_TOPIC, Consumed.with(STRING_SERDE, STRING_SERDE));
 
-        KGroupedStream<String, String> cowsPriceLower1100Grouped = messageStream.selectKey((key, value) -> KEY)
-                .mapValues(value -> kafkaConnectMapper.getObjectFromStringMessage(value, MilkCowFact.class))
-                .filter((key, value) -> value.getMilkCowCostPerAnimal() < 1100)
+        String britishNat = "United Kingdom";
+        KGroupedStream<String, String> amountOfBritishWinners = messageStream.selectKey((key, value) -> KEY)
+                .mapValues(value -> kafkaConnectMapper.getObjectFromStringMessage(value, Winner.class))
+                .filter((key, value) -> value.getNationality().equals(britishNat))
                 .mapValues(kafkaConnectMapper::mapObjectToStringMessage)
                 .groupByKey();
 
         // Вікно фіксованого розміру, що не перекривається
         TimeWindows tumblingWindows = TimeWindows.of(Duration.ofSeconds(20));
-        KTable<Windowed<String>, Long>  tumbled = cowsPriceLower1100Grouped
+        KTable<Windowed<String>, Long>  tumbled = amountOfBritishWinners
                 .windowedBy(tumblingWindows)
                 .count();
 
-        // Вікно фіксованого розміру, що перекривається
-        */
-/*TimeWindows hoppingWindow = TimeWindows.of(Duration.ofSeconds(10))
+       /* // Вікно фіксованого розміру, що перекривається
+TimeWindows hoppingWindow = TimeWindows.of(Duration.ofSeconds(10))
                 .advanceBy(Duration.ofSeconds(2));
-        KTable<Windowed<String>, Long>  hopping = cowsPriceLower1100Grouped
+        KTable<Windowed<String>, Long>  hopping = amountOfBritishWinners
                 .windowedBy(hoppingWindow)
-                .count();*//*
+                .count();
 
 
         // Вікно cесії
-       */
-/* Duration inactivityDuration = Duration.ofSeconds(10);
-        KTable<Windowed<String>, Long>  session = cowsPriceLower1100Grouped
+ Duration inactivityDuration = Duration.ofSeconds(10);
+        KTable<Windowed<String>, Long>  session = amountOfBritishWinners
                 .windowedBy(SessionWindows.ofInactivityGapWithNoGrace(inactivityDuration))
-                .count();*//*
-
+                .count();
+*/
 
         tumbled.toStream()
                 .selectKey((key, value) -> KEY)
@@ -66,4 +64,3 @@ public class KafkaStreamsPipelineLab5 {
                 .to(WINDOWED_TOPIC);
     }
 }
-*/

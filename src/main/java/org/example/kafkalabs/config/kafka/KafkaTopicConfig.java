@@ -15,6 +15,9 @@ public class KafkaTopicConfig {
     public static final String MARATHONS_TILL_1990 = "marathons-till-1990";
     public static final String MARATHONS_FROM_1990_TO_2000 = "marathons-from-1990-to-2000";
     public static final String MARATHONS_FROM_2000 = "marathons-from-2000";
+    public static final String AMOUNT_OF_BRITISH_WINNERS = "amount-of-british-winners";
+    public static final String AMOUNT_OF_WINNERS_FROM_1990_TO_2000 = "amount-of-winners-from-1990-to-2000";
+    public static final String JOINED_MARATHONS = "joined-marathons";
     public static final String WINDOWED_TOPIC = "windowed";
 
     public static final String PRODUCER_METRICS_TOPIC = "producer-metrics";
@@ -58,6 +61,20 @@ public class KafkaTopicConfig {
     @Qualifier("marathons-from-2000")
     public NewTopic marathonsFrom2000() {
         return TopicBuilder.name(MARATHONS_FROM_2000)
+                .build();
+    }
+
+    @Bean
+    @Qualifier("amount-of-british-winners")
+    public NewTopic amountOfBritishWinners() {
+        return TopicBuilder.name(AMOUNT_OF_BRITISH_WINNERS)
+                .build();
+    }
+
+    @Bean
+    @Qualifier("amount-of-winners-from-1990-to-2000")
+    public NewTopic amountOfWinnersFrom1900To2000() {
+        return TopicBuilder.name(AMOUNT_OF_WINNERS_FROM_1990_TO_2000)
                 .build();
     }
 

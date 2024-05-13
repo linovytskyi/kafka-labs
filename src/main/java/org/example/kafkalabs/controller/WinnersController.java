@@ -42,11 +42,11 @@ public class WinnersController {
                     "VALUES (?, ?, ?, ?, ?)";
 
             jdbcTemplate.update(sql,
-                    winners.getCategory(),
-                    winners.getYear(),
-                    winners.getAthlete(),
-                    winners.getNationality(),
-                    winners.getTime());
+                    winner.getCategory(),
+                    winner.getYear(),
+                    winner.getAthlete(),
+                    winner.getNationality(),
+                    winner.getTime());
 
             LOGGER.warn("Successfully inserted object to database");
         } catch (Exception e) {

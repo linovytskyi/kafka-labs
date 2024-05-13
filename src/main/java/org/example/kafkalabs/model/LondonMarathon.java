@@ -20,7 +20,6 @@ public class LondonMarathon {
     private Integer starters;
     private Integer finishers;
     private Double raised;
-    @JsonProperty("Official charity")
     private String officialCharity;
 
     public static LondonMarathon createRandomEvent() {

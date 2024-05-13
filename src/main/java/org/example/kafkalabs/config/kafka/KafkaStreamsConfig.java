@@ -1,3 +1,4 @@
+/*
 package org.example.kafkalabs.config.kafka;
 
 import org.apache.kafka.clients.consumer.ConsumerConfig;
@@ -33,3 +34,4 @@ public class KafkaStreamsConfig {
         return new KafkaStreamsConfiguration(props);
     }
 }
+*/

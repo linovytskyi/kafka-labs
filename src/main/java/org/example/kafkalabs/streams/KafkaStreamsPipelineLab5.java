@@ -1,3 +1,4 @@
+/*
 package org.example.kafkalabs.streams;
 
 import org.apache.kafka.common.serialization.Serde;
@@ -43,17 +44,21 @@ public class KafkaStreamsPipelineLab5 {
                 .count();
 
         // Вікно фіксованого розміру, що перекривається
-        /*TimeWindows hoppingWindow = TimeWindows.of(Duration.ofSeconds(10))
+        */
+/*TimeWindows hoppingWindow = TimeWindows.of(Duration.ofSeconds(10))
                 .advanceBy(Duration.ofSeconds(2));
         KTable<Windowed<String>, Long>  hopping = cowsPriceLower1100Grouped
                 .windowedBy(hoppingWindow)
-                .count();*/
+                .count();*//*
+
 
         // Вікно cесії
-       /* Duration inactivityDuration = Duration.ofSeconds(10);
+       */
+/* Duration inactivityDuration = Duration.ofSeconds(10);
         KTable<Windowed<String>, Long>  session = cowsPriceLower1100Grouped
                 .windowedBy(SessionWindows.ofInactivityGapWithNoGrace(inactivityDuration))
-                .count();*/
+                .count();*//*
+
 
         tumbled.toStream()
                 .selectKey((key, value) -> KEY)
@@ -61,3 +66,4 @@ public class KafkaStreamsPipelineLab5 {
                 .to(WINDOWED_TOPIC);
     }
 }
+*/

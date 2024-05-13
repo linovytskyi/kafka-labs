@@ -29,6 +29,7 @@ public class KafkaConnectMapper {
         rootNode.set("after", valueNode);
         ObjectNode payloadNode = objectMapper.createObjectNode();
         payloadNode.set("payload", rootNode);
+        System.out.println(payloadNode.toPrettyString());
         try {
             return objectMapper.writeValueAsString(payloadNode);
         } catch (Exception e) {

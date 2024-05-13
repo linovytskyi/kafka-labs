@@ -1,3 +1,4 @@
+/*
 package org.example.kafkalabs.streams;
 
 import org.apache.kafka.common.serialization.Serde;
@@ -85,3 +86,4 @@ public class KafkaStreamsPipelineLab4 {
         joinedStream.to(JOINED_AVG_PRICE_MILK_TOPIC);
     }
 }
+*/

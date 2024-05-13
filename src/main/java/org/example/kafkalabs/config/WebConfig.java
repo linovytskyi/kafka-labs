@@ -12,6 +12,7 @@ public class WebConfig {
     public ObjectMapper objectMapper() {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.setPropertyNamingStrategy(PropertyNamingStrategies.SNAKE_CASE);
+        objectMapper.findAndRegisterModules();
         return objectMapper;
     }
 }

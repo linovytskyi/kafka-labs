@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.Random;
 
@@ -12,7 +13,7 @@ import java.util.Random;
 @AllArgsConstructor
 @NoArgsConstructor
 public class LondonMarathon {
-    private Date date;
+    private LocalDate date;
     private Integer year;
     private Integer applicants;
     private Integer accepted;
@@ -24,7 +25,7 @@ public class LondonMarathon {
 
     public static LondonMarathon createRandomEvent() {
         Random random = new Random();
-        Date randomDate = new Date();
+        LocalDate randomDate = LocalDate.now();
         int randomYear = 2020 + random.nextInt(5);
         int randomApplicants = random.nextInt(500) + 100;
         int randomAccepted = random.nextInt(randomApplicants);

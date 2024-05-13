@@ -10,6 +10,11 @@ import org.springframework.kafka.config.TopicBuilder;
 public class KafkaTopicConfig {
 
     public static final String LONDON_MARATHON_INPUT_TOPIC = "london-marathon1.public.london_marathon";
+    public static final String WINNERS_INPUT_TOPIC = "winners.public.winners";
+    public static final String BRITISH_TOPIC = "british";
+    public static final String MARATHONS_TILL_1990 = "marathons-till-1990";
+    public static final String MARATHONS_FROM_1990_TO_2000 = "marathons-from-1990-to-2000";
+    public static final String MARATHONS_FROM_2000 = "marathons-from-2000";
     public static final String WINDOWED_TOPIC = "windowed";
 
     public static final String PRODUCER_METRICS_TOPIC = "producer-metrics";
@@ -18,6 +23,41 @@ public class KafkaTopicConfig {
     @Qualifier("london-marathon1.public.london_marathon")
     public NewTopic londonMarathonTopic() {
         return TopicBuilder.name(LONDON_MARATHON_INPUT_TOPIC)
+                .build();
+    }
+
+    @Bean
+    @Qualifier("winners.public.winners")
+    public NewTopic winnersTopic() {
+        return TopicBuilder.name(WINNERS_INPUT_TOPIC)
+                .build();
+    }
+
+    @Bean
+    @Qualifier("british")
+    public NewTopic britishTopic() {
+        return TopicBuilder.name(BRITISH_TOPIC)
+                .build();
+    }
+
+    @Bean
+    @Qualifier("marathons-till-1990")
+    public NewTopic marathonsTill1900() {
+        return TopicBuilder.name(MARATHONS_TILL_1990)
+                .build();
+    }
+
+    @Bean
+    @Qualifier("marathons-from-1990-to-2000")
+    public NewTopic marathonsFrom1990Till2000() {
+        return TopicBuilder.name(MARATHONS_FROM_1990_TO_2000)
+                .build();
+    }
+
+    @Bean
+    @Qualifier("marathons-from-2000")
+    public NewTopic marathonsFrom2000() {
+        return TopicBuilder.name(MARATHONS_FROM_2000)
                 .build();
     }
 

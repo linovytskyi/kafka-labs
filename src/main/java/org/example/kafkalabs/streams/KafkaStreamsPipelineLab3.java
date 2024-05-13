@@ -1,16 +1,14 @@
-/*
 package org.example.kafkalabs.streams;
 
 import org.apache.kafka.common.serialization.Serde;
 import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.streams.StreamsBuilder;
 import org.apache.kafka.streams.kstream.*;
-import org.example.kafkalabs.model.MilkCowFact;
+import org.example.kafkalabs.model.LondonMarathon;
+import org.example.kafkalabs.model.Winner;
 import org.example.kafkalabs.utill.KafkaConnectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import java.util.Random;
 
 import static org.example.kafkalabs.config.kafka.KafkaTopicConfig.*;
 
@@ -26,36 +24,38 @@ public class KafkaStreamsPipelineLab3 {
         this.kafkaConnectMapper = kafkaConnectMapper;
     }
 
-    //  @Autowired
+    @Autowired
     void lab3Pipeline(StreamsBuilder streamsBuilder) {
-        KStream<String, String> messageStream = streamsBuilder
-                .stream(MILK_COW_FACTS_INPUT_TOPIC, Consumed.with(STRING_SERDE, STRING_SERDE));
+        KStream<String, String> winnersStream = streamsBuilder
+                .stream(WINNERS_INPUT_TOPIC, Consumed.with(STRING_SERDE, STRING_SERDE));
+
+        KStream<String, String> marathonsStream = streamsBuilder
+                .stream(WINNERS_INPUT_TOPIC, Consumed.with(STRING_SERDE, STRING_SERDE));
 
 
-        // 1. Відфільтрувати записи, де ціна за корову менше 1100.
-        */
-/*messageStream.mapValues(value -> kafkaConnectMapper.getObjectFromStringMessage(value, MilkCowFact.class))
-                .filter((key, value) -> value.getMilkCowCostPerAnimal() < 1100)
+        // 1. Відфільтрувати записи бігунів Великої Британії.
+        String britishNat = "United Kingdom";
+        winnersStream.mapValues(value -> kafkaConnectMapper.getObjectFromStringMessage(value, Winner.class))
+                .filter((key, value) -> value.getNationality().equals(britishNat))
                 .mapValues(kafkaConnectMapper::mapObjectToStringMessage)
-                .to(LESS_THAN_1000_OUTPUT_TOPIC, Produced.with(Serdes.String(), Serdes.String()));*//*
+                .to(BRITISH_TOPIC, Produced.with(Serdes.String(), Serdes.String()));
 
 
-        // 2. Розділити записи на три гілки: середня ціна за молоко менше 0.13, від 0.13 до 0.16, більше 0.16. Записати результати у різні тем
-        messageStream.mapValues(value -> kafkaConnectMapper.getObjectFromStringMessage(value, MilkCowFact.class))
+        // 2. Розділити записи на три гілки: рік марафону до 1990, від 1990 до 2000, після 2000. Записати результати у різні теми
+        marathonsStream.mapValues(value -> kafkaConnectMapper.getObjectFromStringMessage(value, LondonMarathon.class))
                 .split()
-                .branch((key, value) -> value.getAvgPriceMilk() < 0.13, Branched.withConsumer(
+                .branch((key, value) -> value.getYear() < 1990, Branched.withConsumer(
                         (ks) -> ks.selectKey((key, value) -> KEY)
                                 .mapValues(kafkaConnectMapper::mapObjectToStringMessage)
-                                .to(LESS_THAN_013_OUTPUT_TOPIC)))
-                .branch((key, value) -> value.getAvgPriceMilk() >= 0.13 && value.getAvgPriceMilk() <= 0.16, Branched.withConsumer(
+                                .to(MARATHONS_TILL_1990)))
+                .branch((key, value) -> value.getYear() >= 1990 && value.getYear() <= 2000, Branched.withConsumer(
                         (ks) -> ks.selectKey((key, value) -> KEY)
                                 .mapValues(kafkaConnectMapper::mapObjectToStringMessage)
-                                .to(MORE_EQUAL_THAN_013_LESS_EQUAL_THAN_016_OUTPUT_TOPIC)))
-                .branch((key, value) -> value.getAvgPriceMilk() > 0.16, Branched.withConsumer(
+                                .to(MARATHONS_FROM_1990_TO_2000)))
+                .branch((key, value) -> value.getYear() > 2000, Branched.withConsumer(
                         (ks) -> ks.selectKey((key, value) -> KEY)
                                 .mapValues(kafkaConnectMapper::mapObjectToStringMessage)
-                                .to(MORE_THAN_016_OUTPUT_TOPIC)))
+                                .to(MARATHONS_FROM_2000)))
                 .defaultBranch();
     }
 }
-*/

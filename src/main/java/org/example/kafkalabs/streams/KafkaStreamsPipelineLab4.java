@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.time.Duration;
+import java.util.Objects;
 
 import static org.example.kafkalabs.config.kafka.KafkaTopicConfig.*;
 
@@ -49,10 +50,12 @@ public class KafkaStreamsPipelineLab4 {
                 messageStream.selectKey((key, value) -> KEY)
                         .mapValues(value -> kafkaConnectMapper.getObjectFromStringMessage(value, Winner.class))
                         .filter((key, value) -> value.getYear() >= 1990 && value.getYear() <= 2000)
+                        .mapValues(kafkaConnectMapper::mapObjectToStringMessage)
                         .groupByKey()
                         .count();
 
         amountOfWinnersFrom1900To2000.toStream()
+                .mapValues(Object::toString)
                 .to(AMOUNT_OF_WINNERS_FROM_1990_TO_2000);
 
 

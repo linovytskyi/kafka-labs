@@ -29,9 +29,6 @@ public class KafkaStreamsPipelineLab3 {
         KStream<String, String> winnersStream = streamsBuilder
                 .stream(WINNERS_INPUT_TOPIC, Consumed.with(STRING_SERDE, STRING_SERDE));
 
-        KStream<String, String> marathonsStream = streamsBuilder
-                .stream(WINNERS_INPUT_TOPIC, Consumed.with(STRING_SERDE, STRING_SERDE));
-
 
         // 1. Відфільтрувати записи бігунів Великої Британії.
         String britishNat = "United Kingdom";
@@ -42,7 +39,7 @@ public class KafkaStreamsPipelineLab3 {
 
 
         // 2. Розділити записи на три гілки: рік марафону до 1990, від 1990 до 2000, після 2000. Записати результати у різні теми
-        marathonsStream.mapValues(value -> kafkaConnectMapper.getObjectFromStringMessage(value, LondonMarathon.class))
+        winnersStream.mapValues(value -> kafkaConnectMapper.getObjectFromStringMessage(value, LondonMarathon.class))
                 .split()
                 .branch((key, value) -> value.getYear() < 1990, Branched.withConsumer(
                         (ks) -> ks.selectKey((key, value) -> KEY)

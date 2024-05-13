@@ -20,7 +20,7 @@ public class KafkaListeners {
         this.kafkaConnectMapper = kafkaConnectMapper;
     }
 
-    @KafkaListener(topics = "london-marathon.public.london_marathon", groupId = "None")
+    @KafkaListener(topics = "london-marathon1.public.london_marathon", groupId = "None")
     void listenLondonMarathon(String message) {
         LondonMarathon fact = kafkaConnectMapper.getObjectFromStringMessage(message, LondonMarathon.class);
         logProcessMessage(fact, LONDON_MARATHON_INPUT_TOPIC);

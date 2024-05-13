@@ -9,14 +9,14 @@ import org.springframework.kafka.config.TopicBuilder;
 @Configuration
 public class KafkaTopicConfig {
 
-    public static final String LONDON_MARATHON_INPUT_TOPIC = "london-marathon.public.london_marathon";
+    public static final String LONDON_MARATHON_INPUT_TOPIC = "london-marathon1.public.london_marathon";
     public static final String WINDOWED_TOPIC = "windowed";
 
     public static final String PRODUCER_METRICS_TOPIC = "producer-metrics";
 
     @Bean
-    @Qualifier("milk-products-facts.public.milk_products_facts")
-    public NewTopic milkProductFactsTopic() {
+    @Qualifier("london-marathon1.public.london_marathon")
+    public NewTopic londonMarathonTopic() {
         return TopicBuilder.name(LONDON_MARATHON_INPUT_TOPIC)
                 .build();
     }
